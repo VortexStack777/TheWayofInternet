@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes" />
+  {% set pageTitle = title or name %}
+  <title>The Way of Internet{% if pageTitle and pageLayout != "home" %} - {{ pageTitle }}{% endif %}</title>
+  <meta name="description" content="A knowledge base for everything internet.">
+  <meta name="theme-color" content="#6750A4" />
+  <link href="/logo.png" rel="icon" type="image/png">
+  <script>(function(){var t=localStorage.getItem('material-theme');if(t){var n=document.createElement('style');n.id='material-theme-fallback';n.textContent=t;document.head.appendChild(n);}var m=localStorage.getItem('color-mode');var d=m==='dark'||(m!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches);if(d)document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');localStorage.removeItem('navbar-autohide');['sidepanel-autohide'].forEach(function(k){document.documentElement.classList.toggle(k,localStorage.getItem(k)==='true')})})();</script>
+  <link rel="preload" href="/css/global.css" as="style">
+  <link rel="preload" href="/js/main.js" as="script">
+  <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/syntax-highlight.css">
+  {% if pageLayout == "home" %}
+  <link rel="stylesheet" href="/css/home-page.css">
+  {% endif %}
+  <style>.anchor-link{opacity:0;position:absolute;left:-24px;text-decoration:none!important;font-weight:400}h2,h3,h4{position:relative}</style>
+  <script type="module" src="https://esm.sh/@material/web@2.4.1/all.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Material+Symbols+Outlined&display=swap">
+  {% if hasToc is not defined %}
+    {% if pageLayout != "home" and "/posts/" not in page.filePathStem %}
+      {% set hasToc = true %}
+    {% else %}
+      {% set hasToc = false %}
+    {% endif %}
+  {% endif %}
+</head>
+<body class="{% if pageLayout == 'home' %}is-home{% endif %}">
+  <div class="root">
+    {# ===== TOP APP BAR ===== #}
+    <header class="top-app-bar">
+      <div class="top-app-bar-content">
+        <section class="top-app-bar-start">
+          <md-icon-button id="menu-toggle" class="menu-button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            title="Open navigation menu">
+            <md-icon>menu</md-icon>
+          </md-icon-button>
+          <a href="/" class="home-link" id="home-link">
+            <img class="home-link-icon-img" src="/logo.png" alt="Logo" style="height: 40px; width: 40px; object-fit: contain;">
+          </a>
+          <a href="/" id="home-title">The Way of Internet</a>
+
+          <div class="search-box">
+            <button class="search-btn" id="search-btn" title="Search (Ctrl+K)">
+              <md-icon class="search-icon">search</md-icon>
+              <span class="search-btn-placeholder">Search</span>
+              <span class="search-btn-key">Ctrl K</span>
+            </button>
+          </div>
+
+          <nav class="top-nav-menu">
+            {% for item in nav.navbar.links %}
+            <a href="{{ item.link }}" class="top-nav-link">{{ item.text }}</a>
+            {% endfor %}
+          </nav>
+        </section>
+
+        <a id="skip-to-main" href="#main-content" tabindex="0">Skip to main content</a>
+
+        <section class="top-app-bar-end">
+          <md-icon-button id="theme-button" title="Appearance settings" aria-label="Appearance settings"
+            aria-expanded="false">
+            <md-icon>settings</md-icon>
+          </md-icon-button>
+          <div class="nav-separator"></div>
+
+          {% for social in nav.navbar.socials %}
+            {% if social.platform == 'github' %}
+              <md-icon-button title="GitHub repository" aria-label="GitHub repository"
+                href="{{ social.link }}" target="_blank">
+                <md-icon>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 96" width="24" height="24">
+                    <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/>
+                  </svg>
+                </md-icon>
+              </md-icon-button>
+            {% elif social.platform == 'discord' %}
+              <md-icon-button title="Discord server" aria-label="Discord server"
+                href="{{ social.link }}" target="_blank">
+                <md-icon>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" width="24" height="24">
+                    <path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,52.8,6.83,77.19,77.19,0,0,0,49.5,0,105.15,105.15,0,0,0,19.06,8.07C2.75,32.33-1.66,55.93,.47,79.16A106,106,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5A51.31,51.31,0,0,0,31,78,76.16,76.16,0,0,0,96,78a51.3,51.3,0,0,0,2.83,2.5,68.43,68.43,0,0,1-10.5,5,77.7,77.7,0,0,0,6.63,10.85,106,106,0,0,0,31.57-17.2C129.83,50.78,124.62,27.35,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/>
+                  </svg>
+                </md-icon>
+              </md-icon-button>
+            {% else %}
+              <md-icon-button title="{{ social.platform | capitalize }}" aria-label="{{ social.platform | capitalize }}"
+                href="{{ social.link }}" target="_blank">
+                <md-icon>{{ social.platform }}</md-icon>
+              </md-icon-button>
+            {% endif %}
+          {% endfor %}
+        </section>
+      </div>
+    </header>
+
+    {# ===== BODY: DRAWER + CONTENT ===== #}
+    <div class="body" id="body">
+      <div class="spacer" id="spacer">
+        <div class="scrim" id="scrim"></div>
+        <aside class="drawer" id="drawer">
+          <div class="drawer-scroll-wrapper" id="swup-nav">
+            <nav aria-label="List of pages and components" role="navigation" class="nav-list">
+              {% for section in nav.sections %}
+              <div class="nav-section-title">{{ section.title }}</div>
+              {% for item in section.items %}
+              <a class="nav-item {% if page.url == item.link %}selected{% endif %}"
+                href="{{ item.link }}" role="menuitem"
+                aria-label="{{ item.text }}"
+                title="{{ item.text }}"
+                tabindex="{% if page.url == item.link %}0{% else %}-1{% endif %}">
+                {% if item.icon %}
+                <md-icon class="nav-icon">{{ item.icon }}</md-icon>
+                {% endif %}
+                <span class="nav-item-text">{{ item.text }}</span>
+              </a>
+              {% endfor %}
+              {% if not loop.last %}
+              <hr class="nav-divider">
+              {% endif %}
+              {% endfor %}
+            </nav>
+          </div>
+          <div class="md-legend">
+            <div class="md-legend-body" id="legend-body">
+              <div class="md-legend-card">
+                <div class="md-legend-item">
+                  <span class="material-symbols-outlined md-legend-item-icon">star</span>
+                  <span>Recommended</span>
+                </div>
+                <div class="md-legend-item">
+                  <span class="material-symbols-outlined md-legend-item-icon">crown</span>
+                  <span>Editor</span>
+                </div>
+                <div class="md-legend-item">
+                  <span class="material-symbols-outlined md-legend-item-icon">open_in_new</span>
+                  <span>Redirect</span>
+                </div>
+                <div class="md-legend-item">
+                  <span class="material-symbols-outlined md-legend-item-icon">language</span>
+                  <span>Index</span>
+                </div>
+              </div>
+            </div>
+            <button class="md-legend-trigger" id="legend-trigger" aria-expanded="false">
+              <span class="material-symbols-outlined md-legend-trigger-icon">info</span>
+              <span class="md-legend-trigger-label">Legend</span>
+              <span class="material-symbols-outlined md-legend-trigger-chevron">expand_more</span>
+            </button>
+          </div>
+        </aside>
+      </div>
+
+      {# Content area #}
+      <div class="content-area transition-fade" id="swup-content">
+        <div class="pane content-pane" role="main">
+          <div class="scroll-wrapper">
+            <div class="content" id="main-content" tabindex="0">
+              {% if pageLayout != "home" %}
+              <header class="page-header">
+                <h1 class="page-title">
+                  {% if icon %}
+                  <span class="material-symbols-outlined page-title-icon">{{ icon }}</span>
+                  {% endif %}
+                  <span class="page-title-text">{{ title }}</span>
+                </h1>
+                {% if subtitle or editor or date %}
+                <div class="post-meta-line" style="display: flex; align-items: center; gap: 8px; color: var(--md-sys-color-on-surface-variant); font-size: 15px; margin-top: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+                  {% if subtitle %}
+                    <span class="post-subtitle-inline" style="color: var(--md-sys-color-on-surface-variant);">{{ subtitle }}</span>
+                  {% endif %}
+                  
+                  {% if date %}
+                    {% if subtitle %}
+                      <span class="meta-separator" style="opacity: 0.6;">•</span>
+                    {% endif %}
+                    <span class="post-date-inline" style="color: var(--md-sys-color-primary);">{{ date | shortDate }}</span>
+                  {% endif %}
+
+                  {% if editor %}
+                    {% if subtitle or date %}
+                      <span class="meta-separator" style="opacity: 0.6;">•</span>
+                    {% endif %}
+                    <span class="post-editor-inline" style="display: flex; align-items: center; gap: 6px; color: var(--md-sys-color-on-surface-variant);">
+                      by
+                      {% set editorAvatar = "" %}
+                      {% set editorGithub = "" %}
+                      {% for contributor in contributors %}
+                        {% if contributor.name == editor or contributor.aka == editor %}
+                          {% if contributor.github and contributor.github != "none" %}
+                            {% set editorGithub = contributor.github %}
+                          {% endif %}
+                          {% if contributor.pfp and contributor.pfp != "none" %}
+                            {% set editorAvatar = contributor.pfp %}
+                          {% elif contributor.discordId and contributor.discordId != "none" %}
+                            {% set editorAvatar = "https://avatar-cyan.vercel.app/api/pfp/" + contributor.discordId + "/image" %}
+                          {% elif contributor.github and contributor.github != "none" %}
+                            {% set editorAvatar = contributor.github + ".png" %}
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                      {% if editorAvatar %}
+                        <img src="{{ editorAvatar }}" alt="{{ editor }}" style="width: 22px; height: 22px; min-width: 22px; min-height: 22px; flex-shrink: 0; border-radius: 50%; object-fit: cover;">
+                      {% endif %}
+                      {% if editorGithub %}
+                        <a href="{{ editorGithub }}" target="_blank" rel="noopener noreferrer" style="color: var(--md-sys-color-primary); font-weight: 600; text-decoration: none;" onmouseover="this.style.textDecoration='underline';" onmouseout="this.style.textDecoration='none';">{{ editor }}</a>
+                      {% else %}
+                        <strong style="color: var(--md-sys-color-primary); font-weight: 600;">{{ editor }}</strong>
+                      {% endif %}
+                    </span>
+                  {% endif %}
+                </div>
+                {% endif %}
+              </header>
+              {% endif %}
+              {{ content | safe }}
+            </div>
+          </div>
+        </div>
+        <aside class="toc-rail" id="toc-rail" role="complementary" aria-label="Appearance and Page Contents" style="{% if not hasToc %}display: none;{% endif %}">
+          <!-- Active TOC Content -->
+          <div class="toc-content-wrapper" id="toc-content-wrapper" data-has-toc="{% if hasToc %}true{% else %}false{% endif %}">
+            <p class="toc-label">On this page</p>
+            <h3 class="toc-title">{{ pageTitle }}</h3>
+            <div class="toc" id="toc">
+              {{ content | toc | safe }}
+            </div>
+          </div>
+
+          <!-- Active Settings Content -->
+          <div class="settings-content-wrapper" id="settings-content-wrapper" style="display:none">
+            <div class="settings-panel">
+              <div class="settings-header">
+                <div class="settings-header-left">
+                  <md-icon-button id="settings-back-btn" title="Back" aria-label="Back" style="display:none;margin-left:-8px">
+                    <md-icon>arrow_back</md-icon>
+                  </md-icon-button>
+                  <md-icon class="settings-header-icon" id="settings-header-icon">settings</md-icon>
+                  <h2 class="settings-header-title" id="settings-drawer-title">Appearance</h2>
+                </div>
+                <md-icon-button id="settings-close-btn" title="Close" aria-label="Close appearance panel">
+                  <md-icon>close</md-icon>
+                </md-icon-button>
+              </div>
+
+              <!-- Page 0: Home -->
+              <div class="settings-page" id="settings-page-home">
+                <div class="settings-menu">
+                  <button class="settings-menu-item" id="menu-item-theme">
+                    <div style="display:flex;align-items:center;gap:12px">
+                      <md-icon style="color:var(--md-sys-color-primary)">palette</md-icon>
+                      <span style="font-weight:600;font-size:14px">Theme & Color</span>
+                    </div>
+                    <md-icon style="color:var(--md-sys-color-on-surface-variant)">chevron_right</md-icon>
+                  </button>
+                  <button class="settings-menu-item" id="menu-item-typography">
+                    <div style="display:flex;align-items:center;gap:12px">
+                      <md-icon style="color:var(--md-sys-color-primary)">text_fields</md-icon>
+                      <span style="font-weight:600;font-size:14px">Typography</span>
+                    </div>
+                    <md-icon style="color:var(--md-sys-color-on-surface-variant)">chevron_right</md-icon>
+                  </button>
+                  <button class="settings-menu-item" id="menu-item-site">
+                    <div style="display:flex;align-items:center;gap:12px">
+                      <md-icon style="color:var(--md-sys-color-primary)">tune</md-icon>
+                      <span style="font-weight:600;font-size:14px">Site Setting</span>
+                    </div>
+                    <md-icon style="color:var(--md-sys-color-on-surface-variant)">chevron_right</md-icon>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Page 1: Theme & Color -->
+              <div class="settings-page" id="settings-page-theme" style="display:none">
+                <div class="theme-picker">
+                  <div id="head-wrapper" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+                    <span class="settings-label" style="margin:0">Hex Source Color</span>
+                    <md-icon-button id="copy-theme-btn" title="Copy" aria-label="Copy theme hex" style="width:36px;height:36px">
+                      <md-icon style="font-size:18px">content_copy</md-icon>
+                    </md-icon-button>
+                  </div>
+                  <div style="margin-bottom:20px">
+                    <label id="hex" for="color-input" style="display:flex;gap:12px;align-items:center;cursor:pointer">
+                      <span class="input-wrapper" style="width:40px;height:40px;border-radius:50%;overflow:hidden;display:inline-block;border:2px solid var(--md-sys-color-outline-variant)">
+                        <div class="overflow" style="width:100%;height:100%;transform:scale(1.5)">
+                          <input id="color-input" type="color" style="border:none;padding:0;margin:0;width:100%;height:100%;cursor:pointer">
+                        </div>
+                      </span>
+                      <span id="color-hex-label" style="font-size:14px;font-weight:600;font-family:var(--md-ref-typeface-mono);color:var(--md-sys-color-primary)">#ECAA2E</span>
+                    </label>
+                  </div>
+                  <div class="sliders" style="margin-bottom:24px;display:flex;flex-direction:column;gap:16px">
+                    <div class="hct-slider">
+                      <span class="hct-label" style="font-size:12px;font-weight:600;color:var(--md-sys-color-on-surface-variant)">Hue</span>
+                      <md-slider id="hue-slider" labeled aria-label="Hue" min="0" max="360" value="0" style="width:100%;--md-slider-state-layer-color:var(--md-sys-color-primary)"></md-slider>
+                      <div id="hue-gradient" class="gradient hue" style="height:6px;border-radius:3px;margin-top:4px"></div>
+                    </div>
+                    <div class="hct-slider">
+                      <span class="hct-label" style="font-size:12px;font-weight:600;color:var(--md-sys-color-on-surface-variant)">Chroma</span>
+                      <md-slider id="chroma-slider" labeled aria-label="Chroma" min="0" max="150" value="0" style="width:100%;--md-slider-state-layer-color:var(--md-sys-color-primary)"></md-slider>
+                      <div id="chroma-gradient" class="gradient chroma" style="height:6px;border-radius:3px;margin-top:4px"></div>
+                    </div>
+                    <div class="hct-slider">
+                      <span class="hct-label" style="font-size:12px;font-weight:600;color:var(--md-sys-color-on-surface-variant)">Tone</span>
+                      <md-slider id="tone-slider" labeled aria-label="Tone" min="0" max="100" value="0" style="width:100%;--md-slider-state-layer-color:var(--md-sys-color-primary)"></md-slider>
+                      <div id="tone-gradient" class="gradient tone" style="height:6px;border-radius:3px;margin-top:4px"></div>
+                    </div>
+                  </div>
+                  <div class="theme-presets-container" style="margin-bottom:24px;border-bottom:1px solid var(--md-sys-color-outline-variant);padding-bottom:16px">
+                    <button class="accordion-trigger" id="presets-accordion-trigger" type="button" style="display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 0;background:none;border:none;cursor:pointer;text-align:left;color:var(--md-sys-color-on-surface);outline:none">
+                      <span class="settings-label" style="margin:0">Theme Presets</span>
+                      <md-icon id="presets-accordion-icon" style="transition:transform 0.25s cubic-bezier(0.2,0,0,1)">keyboard_arrow_down</md-icon>
+                    </button>
+                    <div class="accordion-content" id="presets-accordion-content" style="max-height:0;overflow:hidden;transition:max-height 0.3s cubic-bezier(0.2,0,0,1);display:flex;flex-direction:column">
+                      <div class="theme-presets" id="theme-presets-grid" style="display:flex;flex-wrap:wrap;gap:8px;padding-top:8px;padding-bottom:8px"></div>
+                      <div class="theme-variants-wrapper" id="theme-variants-wrapper" style="display:none;margin-top:12px;border-top:1px solid var(--md-sys-color-outline-variant);padding-top:12px">
+                        <span class="settings-label" style="display:block;margin-bottom:8px;text-transform:none">Palettes</span>
+                        <div class="theme-presets" id="theme-variants-grid" style="display:flex;flex-wrap:wrap;gap:8px;padding-bottom:8px"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="color-mode-container">
+                    <span class="settings-label" style="display:block;margin-bottom:8px;text-transform:uppercase;font-size:13px">Color Mode</span>
+                    <div class="segmented-button-set" aria-label="Color mode" id="color-mode-set" role="group" style="margin-bottom:12px;display:flex;width:100%">
+                      <button class="segmented-button" data-value="dark" title="dark" aria-label="dark color scheme" style="flex:1;justify-content:center"><md-icon class="check-icon">check</md-icon><md-icon>dark_mode</md-icon></button>
+                      <button class="segmented-button" data-value="auto" title="auto" aria-label="auto color scheme" style="flex:1;justify-content:center"><md-icon class="check-icon">check</md-icon><md-icon>brightness_medium</md-icon></button>
+                      <button class="segmented-button" data-value="light" title="light" aria-label="light color scheme" style="flex:1;justify-content:center"><md-icon class="check-icon">check</md-icon><md-icon>light_mode</md-icon></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Page 2: Typography -->
+              <div class="settings-page" id="settings-page-typography" style="display:none">
+                <div class="settings-section">
+                  <span class="settings-label">Font Family</span>
+                  <div class="font-selector-grid" id="font-selector-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:24px">
+                    <md-filter-chip class="font-chip" data-font="system" label="System" style="font-family:var(--md-ref-typeface-plain)"></md-filter-chip>
+                    <md-filter-chip class="font-chip" data-font="outfit" label="Outfit" style="font-family:Outfit,sans-serif"></md-filter-chip>
+                    <md-filter-chip class="font-chip" data-font="inter" label="Inter" style="font-family:Inter,sans-serif"></md-filter-chip>
+                    <md-filter-chip class="font-chip" data-font="montserrat" label="Montserrat" style="font-family:Montserrat,sans-serif"></md-filter-chip>
+                    <md-filter-chip class="font-chip" data-font="lora" label="Lora" style="font-family:Lora,Georgia,serif"></md-filter-chip>
+                    <md-filter-chip class="font-chip" data-font="jetbrains" label="JetBrains Mono" style="font-family:JetBrains Mono,monospace;grid-column:span 2"></md-filter-chip>
+                  </div>
+                  <div class="hct-slider">
+                    <span class="hct-label" style="font-size:12px;font-weight:600;color:var(--md-sys-color-on-surface-variant);display:flex;justify-content:space-between">
+                      <span>Font Size Scale</span>
+                      <span id="font-size-val">100%</span>
+                    </span>
+                    <md-slider id="font-size-slider" labeled aria-label="Font Size" min="80" max="130" value="100" style="width:100%;margin-top:8px;--md-slider-state-layer-color:var(--md-sys-color-primary)"></md-slider>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Page 3: Site Setting -->
+              <div class="settings-page" id="settings-page-site" style="display:none">
+                <div class="settings-section">
+                  <div class="settings-row">
+                    <div class="settings-row-left">
+                      <md-icon class="settings-row-icon">star</md-icon>
+                      <span class="settings-row-text">Show only labeled items</span>
+                    </div>
+                    <md-switch id="starred-toggle"></md-switch>
+                  </div>
+                  <p class="settings-desc" style="margin-bottom: 24px;">
+                    Hide list items that are not marked with <strong>⭐</strong><strong>👑</strong><strong>🔗</strong><strong>🌐</strong>
+                    on listing pages.
+                  </p>
+
+                  <div class="settings-row">
+                    <div class="settings-row-left">
+                      <md-icon class="settings-row-icon">vertical_split</md-icon>
+                      <span class="settings-row-text">Sidepanel Autohide</span>
+                    </div>
+                    <md-switch id="sidepanel-autohide-toggle"></md-switch>
+                  </div>
+                  
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script id="notes-registry" type="application/json">{{ getNotesRegistry() | json | safe }}</script>
+  <script type="module" src="/js/main.js"></script>
+  <script src="https://unpkg.com/swup@4"></script>
+  <script src="https://unpkg.com/@swup/head-plugin@2"></script>
+  <script src="https://unpkg.com/@swup/scripts-plugin@2"></script>
+  <script src="https://unpkg.com/@swup/preload-plugin@3"></script>
+  <script>
+    if (!window.swup) {
+      window.swup = new Swup({
+        containers: ['#swup-nav', '#swup-content'],
+        plugins: [
+          new SwupHeadPlugin(),
+          new SwupScriptsPlugin(),
+          new SwupPreloadPlugin()
+        ]
+      });
+      window.dispatchEvent(new Event('swup:init'));
+    }
+  </script>
+
+  {# ===== SEARCH MODAL ===== #}
+  <div class="search-modal" id="search-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Search site">
+    <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+    <div class="search-modal-box">
+      <header class="search-modal-header">
+        <md-icon class="search-input-icon">search</md-icon>
+        <input type="search" id="search-input" placeholder="Search documentation..." autocomplete="off" spellcheck="false">
+        <button class="search-clear-btn" id="search-clear-btn" style="display:none;"><md-icon>close</md-icon></button>
+        <span class="search-esc-key">ESC</span>
+      </header>
+      <div class="search-modal-body" id="search-results-container">
+        <div class="search-no-results" id="search-no-results">No recent searches</div>
+        <ul class="search-results-list" id="search-results-list"></ul>
+      </div>
+      <footer class="search-modal-footer">
+        <span><kbd>↵</kbd> to select</span>
+        <span><kbd>↓</kbd><kbd>↑</kbd> to navigate</span>
+        <span><kbd>esc</kbd> to close</span>
+      </footer>
+    </div>
+  </div>
+
+
+  {# ===== FEEDBACK BUTTON + MODAL ===== #}
+  <button id="feedback-btn" title="Give feedback" aria-label="Give feedback">
+    <md-icon>feedback</md-icon>
+  </button>
+
+  <div class="feedback-modal" id="feedback-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Send feedback">
+    <div class="feedback-backdrop" id="feedback-backdrop"></div>
+    <div class="feedback-box">
+      <div class="feedback-header">
+        <md-icon class="feedback-header-icon">feedback</md-icon>
+        <h3 class="feedback-title">Send Feedback</h3>
+        <button class="feedback-close" id="feedback-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="feedback-body">
+        <select class="feedback-select" id="feedback-category">
+          <option value="">Select a category…</option>
+          <option value="thanks">Say Thanks</option>
+          <option value="suggestion">Wiki Improvement Suggestion</option>
+          <option value="link-request">Add Link Request</option>
+          <option value="rating">Star/Unstar/Remove Suggestion</option>
+        </select>
+
+        <div class="fb-section" id="fb-section-simple">
+          <textarea class="fb-textarea" id="fb-text" placeholder="Share your thoughts…" maxlength="1000"></textarea>
+        </div>
+
+        <div class="fb-section" id="fb-section-link-request" style="display:none">
+          <input class="fb-input" id="flink-url" placeholder="Link URL (e.g. https://example.com/page)">
+          <textarea class="fb-textarea fb-textarea-sm" id="flink-brief" placeholder="Brief description of the link" maxlength="500"></textarea>
+          <textarea class="fb-textarea" id="flink-detail" placeholder="Additional details (optional)" maxlength="1000"></textarea>
+        </div>
+
+        <div class="fb-section" id="fb-section-rating" style="display:none">
+          <div class="fb-rating-row">
+            <select class="fb-select-sm" id="frating-action">
+              <option value="star">Star</option>
+              <option value="unstar">Unstar</option>
+              <option value="remove">Remove</option>
+            </select>
+            <input class="fb-input" id="frating-url" placeholder="Link URL">
+          </div>
+          <textarea class="fb-textarea" id="frating-reason" placeholder="Why do you want to star/unstar/remove this?" maxlength="1000"></textarea>
+        </div>
+
+        <div class="fb-contact">
+          <div class="fb-contact-row">
+            <input class="fb-input" type="email" id="fb-email" placeholder="E-mail address" autocomplete="email">
+            <span class="fb-contact-or">or</span>
+            <input class="fb-input" type="text" id="fb-discord" placeholder="Discord username">
+          </div>
+          <span class="fb-contact-hint">Fill in at least one contact method</span>
+        </div>
+
+        <div class="fb-footer">
+          <span class="fb-charcount" id="fb-charcount">0 / 1000</span>
+          <button class="fb-submit" id="fb-submit" disabled>Send</button>
+        </div>
+        <div class="fb-msg fb-success" id="fb-success">Thanks for your feedback!</div>
+        <div class="fb-msg fb-error" id="fb-error">Failed to send. Try again later.</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/feedback-config.js"></script>
+  <script src="/js/feedback.js"></script>
+
+</body>
+</html>

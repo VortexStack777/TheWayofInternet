@@ -1,0 +1,43 @@
+{
+  "themes": [
+    {
+      "name": "Tokyo Night",
+      "id": "tokyo-night",
+      "color": "#7aa2f7",
+      "variants": [
+        { "name": "Default", "color": "#7aa2f7", "mode": "dark", "background": "#1a1b26", "surface": "#20212e" },
+        { "name": "Storm", "color": "#89ddff", "mode": "dark", "background": "#24283b", "surface": "#2b3046" },
+        { "name": "Light", "color": "#9854f1", "mode": "light", "background": "#e1e2e7", "surface": "#d5d6db" }
+      ]
+    },
+    {
+      "name": "Catppuccin",
+      "id": "catppuccin",
+      "color": "#cba6f7",
+      "variants": [
+        { "name": "Latte", "color": "#8839ef", "mode": "light", "background": "#eff1f5", "surface": "#e6e9ef" },
+        { "name": "Frappé", "color": "#ca9ee6", "mode": "dark", "background": "#303446", "surface": "#292c3c" },
+        { "name": "Macchiato", "color": "#c6a0f6", "mode": "dark", "background": "#24273a", "surface": "#1e2030" },
+        { "name": "Mocha", "color": "#cba6f7", "mode": "dark", "background": "#1e1e2e", "surface": "#181825" }
+      ]
+    },
+    {
+      "name": "Rose Pine",
+      "id": "rose-pine",
+      "color": "#ebbcba",
+      "variants": [
+        { "name": "Main", "color": "#ebbcba", "mode": "dark", "background": "#191724", "surface": "#1f1d2e" },
+        { "name": "Moon", "color": "#9ccfd8", "mode": "dark", "background": "#232136", "surface": "#2a283e" },
+        { "name": "Dawn", "color": "#d7827e", "mode": "light", "background": "#faf4fc", "surface": "#f2e9e1" }
+      ]
+    },
+    {
+      "name": "Dracula",
+      "id": "dracula",
+      "color": "#bd93f9",
+      "variants": [
+        { "name": "Default", "color": "#bd93f9", "mode": "dark", "background": "#282a36", "surface": "#21222c" }
+      ]
+    }
+  ]
+}

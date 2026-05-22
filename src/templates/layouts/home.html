@@ -1,0 +1,46 @@
+---
+layout: layouts/base.html
+---
+
+<div class="vp-hero">
+  <div class="vp-hero-image">
+    <div class="vp-image-bg"></div>
+    <div class="vp-hero-icon-container">
+      {% if ("/" in hero.image) or ("." in hero.image) %}
+        <img src="{{ hero.image }}" alt="Hero Image" class="vp-hero-img">
+      {% else %}
+        <md-icon class="vp-hero-icon">{{ hero.image }}</md-icon>
+      {% endif %}
+    </div>
+  </div>
+  <div class="vp-hero-main">
+    <h1 class="vp-title">{{ hero.name }}</h1>
+    {% if hero.text %}
+    <p class="vp-tagline">{{ hero.text }}</p>
+    {% endif %}
+    {% if hero.actions %}
+    <div class="vp-actions">
+      {% for action in hero.actions %}
+        {% if action.theme == 'primary' %}
+          <md-filled-button class="vp-action-primary" href="{{ action.link }}">{{ action.text }}</md-filled-button>
+        {% else %}
+          <md-filled-tonal-button class="vp-action-secondary" href="{{ action.link }}">{{ action.text }}</md-filled-tonal-button>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="vp-scroll-down" onclick="document.querySelector('.scroll-wrapper').scrollTo({top: window.innerHeight, behavior: 'smooth'})" title="Scroll down">
+      <md-icon>keyboard_arrow_down</md-icon>
+    </div>
+  </div>
+</div>
+<div class="vp-markdown-content">
+  {{ content | safe }}
+</div>
+<footer class="vp-home-footer">
+  <span class="vp-home-footer-text">Made with 💔</span>
+  <span class="vp-home-footer-dot">·</span>
+  <a class="vp-home-footer-link" href="https://github.com/Internet-Way/TheWayofInternet/commit/{{ gitLastCommitHashFull() }}" target="_blank" rel="noopener">{{ gitLastCommitHash() }}</a>
+  <span class="vp-home-footer-dot">·</span>
+  <span class="vp-home-footer-disclaimer">This site doesn't host any files.</span>
+</footer>

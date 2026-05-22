@@ -1,0 +1,115 @@
+{
+  "navbar": {
+    "links": [
+      {
+        "text": "Home",
+        "link": "/"
+      },
+      {
+        "text": "Contributors",
+        "link": "/contributors/"
+      },
+      {
+        "text": "Other Indexes",
+        "link": "#"
+      }
+    ],
+    "socials": [
+      {
+        "platform": "discord",
+        "link": "https://discord.gg/"
+      },
+      {
+        "platform": "github",
+        "link": "https://github.com"
+      }
+    ]
+  },
+  "sections": [
+    {
+      "title": "Guide",
+      "items": [
+        {
+          "text": "Getting Started",
+          "link": "/guide/getting-started/",
+          "icon": "rocket_launch"
+        },
+        {
+          "text": "Basics",
+          "link": "/guide/basics/",
+          "icon": "menu_book"
+        },
+        {
+          "text": "Posts",
+          "link": "/posts/",
+          "icon": "article"
+        }
+      ]
+    },
+    {
+      "title": "Indexes",
+      "items": [
+        {
+          "text": "Artificial Intelligence",
+          "link": "/categories/artificial-intelligence/",
+          "icon": "psychology"
+        },
+        {
+          "text": "Privacy",
+          "link": "/categories/privacy/",
+          "icon": "security"
+        },
+        {
+          "text": "Gaming",
+          "link": "/categories/gaming/",
+          "icon": "sports_esports"
+        },
+        {
+          "text": "Video Media",
+          "link": "/categories/video-media/",
+          "icon": "movie"
+        },
+        {
+          "text": "Audio Media",
+          "link": "/categories/audio-media/",
+          "icon": "headset"
+        },
+        {
+          "text": "Otaku Stuffs",
+          "link": "/categories/otaku-stuffs/",
+          "icon": "animation"
+        },
+        {
+          "text": "Books",
+          "link": "/categories/books/",
+          "icon": "book"
+        },
+        {
+          "text": "Educational",
+          "link": "/categories/educational/",
+          "icon": "school"
+        },
+        {
+          "text": "Android/iOS",
+          "link": "/categories/android-ios/",
+          "icon": "smartphone"
+        },
+        {
+          "text": "Linux/Mac",
+          "link": "/categories/linux-mac/",
+          "icon": "terminal"
+        },
+        {
+          "text": "Non-English",
+          "link": "/categories/non-english/",
+          "icon": "translate"
+        },
+        {
+          "text": "Miscellaneous",
+          "link": "/categories/miscellaneous/",
+          "icon": "category"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+:root {
+  --__code-block-font-size: var(--catalog-body-m-font-size);
+}
+
+pre[class*='language-'] {
+  padding: var(--__code-block-font-size);
+  padding-inline-start: calc(var(--__code-block-font-size) - 3px);
+  border-radius: var(--catalog-shape-xl);
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline);
+  overflow: auto;
+  scrollbar-width: none;
+  margin-block: 1em;
+}
+
+code, code[class*='language-'], pre[class*='language-'] {
+  color: var(--md-sys-color-on-surface-variant);
+  font-family: var(--md-ref-typeface-mono);
+  direction: ltr;
+  text-align: left;
+  word-spacing: normal;
+  white-space: pre;
+  word-wrap: normal;
+  line-height: 1.5;
+  font-size: var(--__code-block-font-size);
+  background: none;
+  border: 0;
+  tab-size: 2;
+  hyphens: none;
+}
+
+:not(pre) > code[class*='language-'] {
+  padding: 5px 10px;
+  line-height: 1;
+  border-radius: 3px;
+  background: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline);
+}
+
+/* Prism/Highlight.js token colors */
+.token.comment, .token.prolog, .token.doctype, .token.cdata {
+  color: var(--md-sys-color-on-surface-dim);
+}
+
+.token.selector, .token.operator, .token.punctuation {
+  color: var(--md-sys-color-on-surface-bright);
+}
+
+.token.namespace {
+  opacity: 0.7;
+}
+
+.token.tag, .token.boolean, .token.number {
+  color: var(--md-sys-color-primary);
+}
+
+.token.atrule, .token.attr-value, .token.hex, .token.string {
+  color: var(--md-sys-color-secondary);
+}
+
+.token.property, .token.entity, .token.url, .token.attr-name, .token.keyword {
+  color: var(--md-sys-color-tertiary);
+}
+
+.token.regex {
+  color: var(--md-sys-color-on-tertiary-container, #3b2b4f);
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.function, .token.constant {
+  color: var(--md-sys-color-tertiary);
+}
+
+.token.important, .token.deliminator {
+  color: var(--md-sys-color-error);
+}
