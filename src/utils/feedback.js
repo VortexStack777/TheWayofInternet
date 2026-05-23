@@ -1,4 +1,6 @@
 (function () {
+  if (window.__fbInit) return;
+  window.__fbInit = true;
   const btn = document.getElementById('feedback-btn');
   const webhookUrl = window.__FEEDBACK_WEBHOOK__;
   if (!btn) return;
@@ -199,6 +201,127 @@
 
       if (!res.ok) throw new Error('Failed');
 
+      successEl.style.display = 'block';
+      errorEl.style.display = 'none';
+      submitBtn.textContent = 'Sent!';
+      setTimeout(function () {
+        closeModal();
+        submitBtn.textContent = 'Send';
+      }, 1500);
+    } catch (err) {
+      errorEl.style.display = 'block';
+      successEl.style.display = 'none';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send';
+    }
+  });
+})();
+
+/* ===== FAB VISIBILITY (homepage / posts pages) ===== */
+(function () {
+  if (window.__fabVisInit) return;
+  window.__fabVisInit = true;
+  function updateFabVisibility() {
+    var group = document.getElementById('fab-group');
+    if (!group) return;
+    var p = window.location.pathname;
+    group.style.display = (p === '/' || p.startsWith('/posts/')) ? 'none' : '';
+  }
+  updateFabVisibility();
+  if (window.swup) {
+    window.swup.hooks.on('page:view', updateFabVisibility);
+  } else {
+    window.addEventListener('swup:init', function () {
+      window.swup.hooks.on('page:view', updateFabVisibility);
+    });
+  }
+})();
+
+/* ===== SUGGEST EDIT ===== */
+(function () {
+  if (window.__seInit) return;
+  window.__seInit = true;
+  const btn = document.getElementById('suggest-edit-btn');
+  if (!btn) return;
+  const webhookUrl = window.__SUGGEST_EDIT_WEBHOOK__;
+
+  const modal = document.getElementById('se-modal');
+  const backdrop = document.getElementById('se-backdrop');
+  const closeBtn = document.getElementById('se-close');
+  const sePage = document.getElementById('se-page');
+  const seSection = document.getElementById('se-section');
+  const seMsg = document.getElementById('se-msg');
+  const submitBtn = document.getElementById('se-submit');
+  const charCount = document.getElementById('se-charcount');
+  const successEl = document.getElementById('se-success');
+  const errorEl = document.getElementById('se-error');
+
+  function openModal() { modal.classList.add('open'); }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    sePage.value = '';
+    seSection.value = '';
+    seMsg.value = '';
+    submitBtn.disabled = true;
+    charCount.textContent = '0 / 2000';
+    successEl.style.display = 'none';
+    errorEl.style.display = 'none';
+  }
+
+  function checkValidity() {
+    var msg = seMsg.value.trim();
+    submitBtn.disabled = !(sePage.value.trim() && msg && msg.length <= 2000);
+  }
+
+  btn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+
+  sePage.addEventListener('input', checkValidity);
+  seSection.addEventListener('input', checkValidity);
+  seMsg.addEventListener('input', function () {
+    var len = this.value.length;
+    charCount.textContent = len + ' / 2000';
+    checkValidity();
+  });
+
+  submitBtn.addEventListener('click', async function () {
+    if (!webhookUrl) {
+      errorEl.textContent = 'Webhook not configured. Ask the site admin to set up DISCORD_FEEDBACK_WEBHOOK.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    var page = sePage.value.trim();
+    var section = seSection.value.trim();
+    var msg = seMsg.value.trim();
+    if (!page || !msg) return;
+
+    var embed = {
+      title: '✏️ Suggest Edit',
+      color: 0x625B71,
+      timestamp: new Date().toISOString(),
+      footer: { text: 'The Way of Internet' },
+      fields: [
+        { name: 'Page', value: page, inline: true }
+      ]
+    };
+    if (section) {
+      embed.fields.push({ name: 'Section', value: section, inline: true });
+    }
+    embed.fields.push({ name: 'Message', value: msg, inline: false });
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      var res = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed] })
+      });
+      if (!res.ok) throw new Error('Failed');
       successEl.style.display = 'block';
       errorEl.style.display = 'none';
       submitBtn.textContent = 'Sent!';

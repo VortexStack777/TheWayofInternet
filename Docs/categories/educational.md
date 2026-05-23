@@ -10,5 +10,5 @@ Educational courses, research papers, textbooks, and developer documentation gui
 
 ## Curated Index
 
-- ðŸŒŸ [Khan Academy](https://www.khanacademy.org) | Free online courses, lessons, and practice.
-- â­ [MDN Web Docs](https://developer.mozilla.org) | Documentation resource for web developers.
+- [Khan Academy](https://www.khanacademy.org) | Free online courses, lessons, and practice.
+- [MDN Web Docs](https://developer.mozilla.org) | Documentation resource for web developers.

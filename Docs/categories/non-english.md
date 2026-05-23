@@ -10,5 +10,5 @@ Foreign language resources, translation tools, and regional media catalogs.
 
 ## Curated Index
 
-- ðŸŒŸ [DeepL](https://www.deepl.com) | Highly accurate machine translation engine.
-- â­ [LibreTranslate](https://libretranslate.com) | Free and open source machine translation API.
+- [DeepL](https://www.deepl.com) | Highly accurate machine translation engine.
+- [LibreTranslate](https://libretranslate.com) | Free and open source machine translation API.

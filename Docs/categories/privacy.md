@@ -10,6 +10,6 @@ Protecting your digital footprint is essential. This page indexes privacy-respec
 
 ## Curated Index
 
-- ðŸŒŸ [Proton Mail](https://proton.me) | Secure, encrypted email based in Switzerland.
-- â­ [Signal](https://signal.org) | End-to-end encrypted messaging messenger.
-- â­ [Brave Browser](https://brave.com) | Privacy-oriented web browser with built-in ad blocker.
+- [Proton Mail](https://proton.me) | Secure, encrypted email based in Switzerland.
+- [Signal](https://signal.org) | End-to-end encrypted messaging messenger.
+- [Brave Browser](https://brave.com) | Privacy-oriented web browser with built-in ad blocker.

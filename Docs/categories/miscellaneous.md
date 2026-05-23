@@ -10,5 +10,5 @@ Useful utilities, browser extensions, system optimizations, and other uncategori
 
 ## Curated Index
 
-- ðŸŒŸ [Internet Archive](https://archive.org) | Digital library of millions of free books, movies, and software.
-- â­ [Wayback Machine](https://web.archive.org) | Archive of the World Wide Web historical snapshots.
+- [Internet Archive](https://archive.org) | Digital library of millions of free books, movies, and software.
+- [Wayback Machine](https://web.archive.org) | Archive of the World Wide Web historical snapshots.

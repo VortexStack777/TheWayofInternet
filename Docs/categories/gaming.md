@@ -10,5 +10,5 @@ Find your favorite games, emulator setups, and community hubs for all gaming pla
 
 ## Curated Index
 
-- ðŸŒŸ [RetroArch](https://www.retroarch.com) | Frontend for emulators, game engines, and media players.
-- â­ [Itch.io](https://itch.io) | Platform for indie developers and gamers.
+- [RetroArch](https://www.retroarch.com) | Frontend for emulators, game engines, and media players.
+- [Itch.io](https://itch.io) | Platform for indie developers and gamers.

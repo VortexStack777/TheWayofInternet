@@ -10,5 +10,5 @@ Your directory for audio stream finders, local music players, and podcast search
 
 ## Curated Index
 
-- ðŸŒŸ [MusicBee](https://www.getmusicbee.com) | Ultimate music manager and player for Windows.
-- â­ [Bandcamp](https://bandcamp.com) | Online music community and artist platform.
+- [MusicBee](https://www.getmusicbee.com) | Ultimate music manager and player for Windows.
+- [Bandcamp](https://bandcamp.com) | Online music community and artist platform.

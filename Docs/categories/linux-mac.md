@@ -10,5 +10,5 @@ Linux distributions, MacOS utilities, terminal customization tools, and shells.
 
 ## Curated Index
 
-- ðŸŒŸ [Homebrew](https://brew.sh) | The missing package manager for macOS and Linux.
-- â­ [Arch Linux](https://archlinux.org) | Lightweight and flexible Linux distribution.
+- [Homebrew](https://brew.sh) | The missing package manager for macOS and Linux.
+- [Arch Linux](https://archlinux.org) | Lightweight and flexible Linux distribution.

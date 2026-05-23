@@ -10,5 +10,5 @@ A collection of platforms, utilities, and indexes for finding and viewing movies
 
 ## Curated Index
 
-- ðŸŒŸ [VLC Media Player](https://www.videolan.org/vlc/) | Free and open source cross-platform multimedia player.
-- â­ [Jellyfin](https://jellyfin.org) | The volunteer-built media system for private hosting.
+- [VLC Media Player](https://www.videolan.org/vlc/) | Free and open source cross-platform multimedia player.
+- [Jellyfin](https://jellyfin.org) | The volunteer-built media system for private hosting.

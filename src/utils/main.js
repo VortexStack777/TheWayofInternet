@@ -103,15 +103,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          tocLinks.forEach(l => l.classList.remove('active'));
-          const id = entry.target.id;
-          const activeLink = document.querySelector(`.toc a[href="#${id}"]`);
-          if (activeLink) activeLink.classList.add('active');
-        }
-      });
-    }, { rootMargin: '-100px 0px -66% 0px' });
+      const intersecting = entries.filter(e => e.isIntersecting);
+      if (intersecting.length > 0) {
+        // If multiple headings are intersecting our threshold zone, 
+        // the one furthest down the page is the "current" one.
+        const target = intersecting.reduce((prev, curr) => 
+          curr.boundingClientRect.top > prev.boundingClientRect.top ? curr : prev
+        );
+        
+        tocLinks.forEach(l => l.classList.remove('active'));
+        const id = target.target.id;
+        const activeLink = document.querySelector(`.toc a[href="#${id}"]`);
+        if (activeLink) activeLink.classList.add('active');
+      }
+    }, { rootMargin: '-70px 0px -88% 0px' });
 
     headings.forEach(h => observer.observe(h.el));
   }
@@ -422,7 +427,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (backBtn) {
       backBtn.onclick = (e) => {
         e.stopPropagation();
-        showSettingsPage('home');
+        const isMobile = window.matchMedia('(max-width: 1024px)').matches;
+        if (isMobile && tocRail && tocRail.classList.contains('settings-open') && pageHome && pageHome.style.display !== 'none') {
+          tocRail.classList.remove('settings-open');
+          lss('appearance-settings-open', 'false');
+        } else {
+          showSettingsPage('home');
+        }
       };
     }
 
@@ -445,7 +456,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function openSettingsPanel() {
       if (tocRail) {
-        tocRail.style.display = 'block';
+        tocRail.style.display = '';
         tocRail.classList.add('settings-active');
       }
       applyLayoutPreferences();
@@ -464,7 +475,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (hasToc) {
         if (tocContentWrapper) tocContentWrapper.style.display = 'block';
         if (tocRail) {
-          tocRail.style.display = 'block';
+          tocRail.style.display = '';
           tocRail.classList.remove('settings-active');
         }
       } else {
@@ -484,7 +495,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const wasOpen = ls('appearance-settings-open') === 'true';
     if (wasOpen) {
       if (tocRail) {
-        tocRail.style.display = 'block';
+        tocRail.style.display = '';
         tocRail.classList.add('settings-active');
       }
       applyLayoutPreferences();
@@ -870,14 +881,114 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // ===== MOBILE CONTROL PANEL =====
+  function initMobileControlPanel() {
+    const mobileTocBtn = document.getElementById('mobile-toc-btn');
+    const mobileTocClose = document.getElementById('mobile-toc-close');
+    const mobileOpenSettings = document.getElementById('mobile-open-settings');
+    const tocRail = document.getElementById('toc-rail');
+    const settingsCloseBtn = document.getElementById('settings-close-btn');
+    const drawerSearchBtn = document.getElementById('drawer-search-btn');
+
+    if (mobileTocBtn && tocRail) {
+      mobileTocBtn.onclick = (e) => {
+        e.stopPropagation();
+        var shown = tocRail.style.display !== 'none';
+        if (shown) {
+          tocRail.classList.remove('settings-active');
+          tocRail.classList.remove('settings-open');
+          tocRail.style.display = 'none';
+          mobileTocBtn.setAttribute('aria-label', 'Show Table of Contents');
+        } else {
+          tocRail.classList.add('settings-active');
+          tocRail.classList.remove('settings-open');
+          tocRail.style.display = '';
+          mobileTocBtn.setAttribute('aria-label', 'Hide Table of Contents');
+          var tocContent = document.getElementById('toc-content-wrapper');
+          var settingsContent = document.getElementById('settings-content-wrapper');
+          if (tocContent) tocContent.style.display = 'block';
+          if (settingsContent) settingsContent.style.display = 'none';
+        }
+      };
+    }
+
+    if (mobileTocClose && tocRail) {
+      mobileTocClose.onclick = (e) => {
+        e.stopPropagation();
+        tocRail.classList.remove('settings-active');
+        tocRail.classList.remove('settings-open');
+        tocRail.style.display = 'none';
+      };
+    }
+
+    if (mobileOpenSettings && tocRail) {
+      mobileOpenSettings.onclick = (e) => {
+        e.stopPropagation();
+        tocRail.classList.add('settings-active');
+        tocRail.classList.add('settings-open');
+        
+        const settingsContent = document.getElementById('settings-content-wrapper');
+        const tocContent = document.getElementById('toc-content-wrapper');
+        if (settingsContent) settingsContent.style.display = 'block';
+        if (tocContent) tocContent.style.display = 'none';
+        
+        lss('appearance-settings-open', 'true');
+        
+        // Show home settings page
+        const pageHome = document.getElementById('settings-page-home');
+        const backBtn = document.getElementById('settings-back-btn');
+        const headerTitle = document.getElementById('settings-drawer-title');
+        if (pageHome) pageHome.style.display = 'flex';
+        if (backBtn) backBtn.style.display = 'block';
+        if (headerTitle) headerTitle.textContent = 'Appearance';
+      };
+    }
+
+    if (settingsCloseBtn && tocRail) {
+      const originalSettingsClose = settingsCloseBtn.onclick;
+      settingsCloseBtn.onclick = (e) => {
+        const isMobile = window.matchMedia('(max-width: 1024px)').matches;
+        if (isMobile) {
+          e.stopPropagation();
+          tocRail.classList.remove('settings-active');
+          tocRail.classList.remove('settings-open');
+          tocRail.style.display = 'none';
+          lss('appearance-settings-open', 'false');
+        } else if (originalSettingsClose) {
+          originalSettingsClose(e);
+        }
+      };
+    }
+
+    if (drawerSearchBtn) {
+      drawerSearchBtn.onclick = (e) => {
+        e.stopPropagation();
+        // Close left drawer first
+        const drawer = document.getElementById('drawer');
+        const scrim = document.getElementById('scrim');
+        const menuToggle = document.getElementById('menu-toggle');
+        if (drawer) drawer.classList.remove('open');
+        if (scrim) scrim.classList.remove('open');
+        if (menuToggle) {
+          menuToggle.setAttribute('aria-label', 'Open navigation menu');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.title = 'Open navigation menu';
+        }
+        openSearch();
+      };
+    }
+  }
+
   // --- Initial Bind ---
   initAppearancePanel();
+  initMobileControlPanel();
 
   // --- Swup Re-initialization Hook ---
   if (window.swup) {
     window.swup.hooks.on('page:view', () => {
       initAppearancePanel();
       applyLayoutPreferences();
+      initMobileControlPanel();
     });
   }
 

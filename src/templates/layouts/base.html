@@ -62,15 +62,21 @@
         <a id="skip-to-main" href="#main-content" tabindex="0">Skip to main content</a>
 
         <section class="top-app-bar-end">
-          <md-icon-button id="theme-button" title="Appearance settings" aria-label="Appearance settings"
+          <!-- Mobile TOC Toggle Button (Mobile only) -->
+          <md-icon-button id="mobile-toc-btn" class="mobile-toc-btn" title="Show Table of Contents" aria-label="Show Table of Contents">
+            <md-icon>toc</md-icon>
+          </md-icon-button>
+
+          <!-- Desktop Settings Button -->
+          <md-icon-button id="theme-button" class="desktop-only-header-btn" title="Appearance settings" aria-label="Appearance settings"
             aria-expanded="false">
             <md-icon>settings</md-icon>
           </md-icon-button>
-          <div class="nav-separator"></div>
+          <div class="nav-separator desktop-only-header-btn"></div>
 
           {% for social in nav.navbar.socials %}
             {% if social.platform == 'github' %}
-              <md-icon-button title="GitHub repository" aria-label="GitHub repository"
+              <md-icon-button class="desktop-only-header-btn" title="GitHub repository" aria-label="GitHub repository"
                 href="{{ social.link }}" target="_blank">
                 <md-icon>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 96" width="24" height="24">
@@ -79,7 +85,7 @@
                 </md-icon>
               </md-icon-button>
             {% elif social.platform == 'discord' %}
-              <md-icon-button title="Discord server" aria-label="Discord server"
+              <md-icon-button class="desktop-only-header-btn" title="Discord server" aria-label="Discord server"
                 href="{{ social.link }}" target="_blank">
                 <md-icon>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" width="24" height="24">
@@ -88,7 +94,7 @@
                 </md-icon>
               </md-icon-button>
             {% else %}
-              <md-icon-button title="{{ social.platform | capitalize }}" aria-label="{{ social.platform | capitalize }}"
+              <md-icon-button class="desktop-only-header-btn" title="{{ social.platform | capitalize }}" aria-label="{{ social.platform | capitalize }}"
                 href="{{ social.link }}" target="_blank">
                 <md-icon>{{ social.platform }}</md-icon>
               </md-icon-button>
@@ -100,60 +106,67 @@
 
     {# ===== BODY: DRAWER + CONTENT ===== #}
     <div class="body" id="body">
-      <div class="spacer" id="spacer">
-        <div class="scrim" id="scrim"></div>
-        <aside class="drawer" id="drawer">
-          <div class="drawer-scroll-wrapper" id="swup-nav">
-            <nav aria-label="List of pages and components" role="navigation" class="nav-list">
-              {% for section in nav.sections %}
-              <div class="nav-section-title">{{ section.title }}</div>
-              {% for item in section.items %}
-              <a class="nav-item {% if page.url == item.link %}selected{% endif %}"
-                href="{{ item.link }}" role="menuitem"
-                aria-label="{{ item.text }}"
-                title="{{ item.text }}"
-                tabindex="{% if page.url == item.link %}0{% else %}-1{% endif %}">
-                {% if item.icon %}
-                <md-icon class="nav-icon">{{ item.icon }}</md-icon>
-                {% endif %}
-                <span class="nav-item-text">{{ item.text }}</span>
-              </a>
-              {% endfor %}
-              {% if not loop.last %}
-              <hr class="nav-divider">
+      <div class="spacer" id="spacer"></div>
+      <div class="scrim" id="scrim"></div>
+      <aside class="drawer" id="drawer">
+        <!-- Search box inside left drawer for mobile -->
+        <div class="drawer-search-box">
+          <button class="search-btn" id="drawer-search-btn" title="Search (Ctrl+K)">
+            <md-icon class="search-icon">search</md-icon>
+            <span class="search-btn-placeholder">Search...</span>
+          </button>
+        </div>
+
+        <div class="drawer-scroll-wrapper" id="swup-nav">
+          <nav aria-label="List of pages and components" role="navigation" class="nav-list">
+            {% for section in nav.sections %}
+            <div class="nav-section-title">{{ section.title }}</div>
+            {% for item in section.items %}
+            <a class="nav-item {% if page.url == item.link %}selected{% endif %}"
+              href="{{ item.link }}" role="menuitem"
+              aria-label="{{ item.text }}"
+              title="{{ item.text }}"
+              tabindex="{% if page.url == item.link %}0{% else %}-1{% endif %}">
+              {% if item.icon %}
+              <md-icon class="nav-icon">{{ item.icon }}</md-icon>
               {% endif %}
-              {% endfor %}
-            </nav>
-          </div>
-          <div class="md-legend">
-            <div class="md-legend-body" id="legend-body">
-              <div class="md-legend-card">
-                <div class="md-legend-item">
-                  <span class="material-symbols-outlined md-legend-item-icon">star</span>
-                  <span>Recommended</span>
-                </div>
-                <div class="md-legend-item">
-                  <span class="material-symbols-outlined md-legend-item-icon">crown</span>
-                  <span>Editor</span>
-                </div>
-                <div class="md-legend-item">
-                  <span class="material-symbols-outlined md-legend-item-icon">open_in_new</span>
-                  <span>Redirect</span>
-                </div>
-                <div class="md-legend-item">
-                  <span class="material-symbols-outlined md-legend-item-icon">language</span>
-                  <span>Index</span>
-                </div>
+              <span class="nav-item-text">{{ item.text }}</span>
+            </a>
+            {% endfor %}
+            {% if not loop.last %}
+            <hr class="nav-divider">
+            {% endif %}
+            {% endfor %}
+          </nav>
+        </div>
+        <div class="md-legend">
+          <div class="md-legend-body" id="legend-body">
+            <div class="md-legend-card">
+              <div class="md-legend-item">
+                <span class="material-symbols-outlined md-legend-item-icon">star</span>
+                <span>Recommended</span>
+              </div>
+              <div class="md-legend-item">
+                <span class="material-symbols-outlined md-legend-item-icon">crown</span>
+                <span>Editor</span>
+              </div>
+              <div class="md-legend-item">
+                <span class="material-symbols-outlined md-legend-item-icon">open_in_new</span>
+                <span>Redirect</span>
+              </div>
+              <div class="md-legend-item">
+                <span class="material-symbols-outlined md-legend-item-icon">language</span>
+                <span>Index</span>
               </div>
             </div>
-            <button class="md-legend-trigger" id="legend-trigger" aria-expanded="false">
-              <span class="material-symbols-outlined md-legend-trigger-icon">info</span>
-              <span class="md-legend-trigger-label">Legend</span>
-              <span class="material-symbols-outlined md-legend-trigger-chevron">expand_more</span>
-            </button>
           </div>
-        </aside>
-      </div>
+          <button class="md-legend-trigger" id="legend-trigger" aria-expanded="false">
+            <span class="material-symbols-outlined md-legend-trigger-icon">info</span>
+            <span class="md-legend-trigger-label">Legend</span>
+            <span class="material-symbols-outlined md-legend-trigger-chevron">expand_more</span>
+          </button>
+        </div>
+      </aside>
 
       {# Content area #}
       <div class="content-area transition-fade" id="swup-content">
@@ -222,9 +235,34 @@
           </div>
         </div>
         <aside class="toc-rail" id="toc-rail" role="complementary" aria-label="Appearance and Page Contents" style="{% if not hasToc %}display: none;{% endif %}">
+
           <!-- Active TOC Content -->
           <div class="toc-content-wrapper" id="toc-content-wrapper" data-has-toc="{% if hasToc %}true{% else %}false{% endif %}">
-            <p class="toc-label">On this page</p>
+            <div class="mobile-toc-header">
+              <div class="mobile-toc-actions">
+                <md-icon-button id="mobile-open-settings" title="Appearance settings" aria-label="Appearance settings">
+                  <md-icon>settings</md-icon>
+                </md-icon-button>
+                
+                {% for social in nav.navbar.socials %}
+                  <md-icon-button class="mobile-toc-social-btn" title="{{ social.platform | capitalize }}" aria-label="{{ social.platform | capitalize }}"
+                    href="{{ social.link }}" target="_blank">
+                    <md-icon>
+                      {% if social.platform == 'github' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 96" width="20" height="20"><path fill="currentColor" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"/></svg>
+                      {% elif social.platform == 'discord' %}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" width="20" height="20"><path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,77.26,0a77.19,77.19,0,0,0-3.3,6.83A96.67,96.67,0,0,0,52.8,6.83,77.19,77.19,0,0,0,49.5,0,105.15,105.15,0,0,0,19.06,8.07C2.75,32.33-1.66,55.93,.47,79.16A106,106,0,0,0,32,96.36a77.7,77.7,0,0,0,6.63-10.85,68.43,68.43,0,0,1-10.5-5A51.31,51.31,0,0,0,31,78,76.16,76.16,0,0,0,96,78a51.3,51.3,0,0,0,2.83,2.5,68.43,68.43,0,0,1-10.5,5,77.7,77.7,0,0,0,6.63,10.85,106,106,0,0,0,31.57-17.2C129.83,50.78,124.62,27.35,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53S36.18,40.36,42.45,40.36,53.83,46,53.83,53,48.72,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.24,60,73.24,53S78.41,40.36,84.69,40.36,96.07,46,96.07,53,91,65.69,84.69,65.69Z"/></svg>
+                      {% else %}
+                        {{ social.platform }}
+                      {% endif %}
+                    </md-icon>
+                  </md-icon-button>
+                {% endfor %}
+              </div>
+              <md-icon-button id="mobile-toc-close" title="Close TOC" aria-label="Close TOC">
+                <md-icon>close</md-icon>
+              </md-icon-button>
+            </div>
             <h3 class="toc-title">{{ pageTitle }}</h3>
             <div class="toc" id="toc">
               {{ content | toc | safe }}
@@ -430,73 +468,6 @@
       </footer>
     </div>
   </div>
-
-
-  {# ===== FEEDBACK BUTTON + MODAL ===== #}
-  <button id="feedback-btn" title="Give feedback" aria-label="Give feedback">
-    <md-icon>feedback</md-icon>
-  </button>
-
-  <div class="feedback-modal" id="feedback-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Send feedback">
-    <div class="feedback-backdrop" id="feedback-backdrop"></div>
-    <div class="feedback-box">
-      <div class="feedback-header">
-        <md-icon class="feedback-header-icon">feedback</md-icon>
-        <h3 class="feedback-title">Send Feedback</h3>
-        <button class="feedback-close" id="feedback-close" aria-label="Close">&times;</button>
-      </div>
-      <div class="feedback-body">
-        <select class="feedback-select" id="feedback-category">
-          <option value="">Select a category…</option>
-          <option value="thanks">Say Thanks</option>
-          <option value="suggestion">Wiki Improvement Suggestion</option>
-          <option value="link-request">Add Link Request</option>
-          <option value="rating">Star/Unstar/Remove Suggestion</option>
-        </select>
-
-        <div class="fb-section" id="fb-section-simple">
-          <textarea class="fb-textarea" id="fb-text" placeholder="Share your thoughts…" maxlength="1000"></textarea>
-        </div>
-
-        <div class="fb-section" id="fb-section-link-request" style="display:none">
-          <input class="fb-input" id="flink-url" placeholder="Link URL (e.g. https://example.com/page)">
-          <textarea class="fb-textarea fb-textarea-sm" id="flink-brief" placeholder="Brief description of the link" maxlength="500"></textarea>
-          <textarea class="fb-textarea" id="flink-detail" placeholder="Additional details (optional)" maxlength="1000"></textarea>
-        </div>
-
-        <div class="fb-section" id="fb-section-rating" style="display:none">
-          <div class="fb-rating-row">
-            <select class="fb-select-sm" id="frating-action">
-              <option value="star">Star</option>
-              <option value="unstar">Unstar</option>
-              <option value="remove">Remove</option>
-            </select>
-            <input class="fb-input" id="frating-url" placeholder="Link URL">
-          </div>
-          <textarea class="fb-textarea" id="frating-reason" placeholder="Why do you want to star/unstar/remove this?" maxlength="1000"></textarea>
-        </div>
-
-        <div class="fb-contact">
-          <div class="fb-contact-row">
-            <input class="fb-input" type="email" id="fb-email" placeholder="E-mail address" autocomplete="email">
-            <span class="fb-contact-or">or</span>
-            <input class="fb-input" type="text" id="fb-discord" placeholder="Discord username">
-          </div>
-          <span class="fb-contact-hint">Fill in at least one contact method</span>
-        </div>
-
-        <div class="fb-footer">
-          <span class="fb-charcount" id="fb-charcount">0 / 1000</span>
-          <button class="fb-submit" id="fb-submit" disabled>Send</button>
-        </div>
-        <div class="fb-msg fb-success" id="fb-success">Thanks for your feedback!</div>
-        <div class="fb-msg fb-error" id="fb-error">Failed to send. Try again later.</div>
-      </div>
-    </div>
-  </div>
-
-  <script src="/feedback-config.js"></script>
-  <script src="/js/feedback.js"></script>
 
 </body>
 </html>

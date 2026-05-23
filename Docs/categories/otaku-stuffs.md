@@ -10,5 +10,5 @@ Anime, manga, light novels, and visual novel databases and indexing tools.
 
 ## Curated Index
 
-- ðŸŒŸ [AniList](https://anilist.co) | Modern anime and manga tracking platform.
-- â­ [MangaDex](https://mangadex.org) | Ad-free online manga reader and community.
+- [AniList](https://anilist.co) | Modern anime and manga tracking platform.
+- [MangaDex](https://mangadex.org) | Ad-free online manga reader and community.

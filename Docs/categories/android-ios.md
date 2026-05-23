@@ -10,5 +10,5 @@ A list of mobile app repositories, system modification tools, and open-source ap
 
 ## Curated Index
 
-- ðŸŒŸ [F-Droid](https://f-droid.org) | Installable catalog of FOSS applications for Android.
-- â­ [Aptoide](https://www.aptoide.com) | Open-source independent Android app store.
+- [F-Droid](https://f-droid.org) | Installable catalog of FOSS applications for Android.
+- [Aptoide](https://www.aptoide.com) | Open-source independent Android app store.

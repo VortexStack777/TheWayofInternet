@@ -10,6 +10,6 @@ Artificial intelligence has transformed how we search, write, and create. This s
 
 ## Curated Index
 
-- ðŸŒŸ [ChatGPT](https://chatgpt.com) | Conversational AI and writing assistant.
-- â­ [Claude](https://claude.ai) | Advanced reasoning and coding assistant.
-- â­ [Perplexity](https://www.perplexity.ai) | Conversational search engine and answer engine.
+- [ChatGPT](https://chatgpt.com) | Conversational AI and writing assistant.
+- [Claude](https://claude.ai) | Advanced reasoning and coding assistant.
+- [Perplexity](https://www.perplexity.ai) | Conversational search engine and answer engine.

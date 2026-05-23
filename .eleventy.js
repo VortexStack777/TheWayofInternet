@@ -658,10 +658,11 @@ module.exports = function (eleventyConfig) {
     const outDir = path.join(__dirname, dir.output);
 
     // Feedback config
-    const webhookUrl = process.env.DISCORD_FEEDBACK_WEBHOOK || '';
+    const fbWebhook = process.env.DISCORD_FEEDBACK_WEBHOOK || '';
+    const seWebhook = process.env.DISCORD_SUGGEST_EDIT_WEBHOOK || '';
     const configPath = path.join(outDir, 'feedback-config.js');
     fs.mkdirSync(path.dirname(configPath), { recursive: true });
-    fs.writeFileSync(configPath, `window.__FEEDBACK_WEBHOOK__ = '${webhookUrl}';\n`);
+    fs.writeFileSync(configPath, `window.__FEEDBACK_WEBHOOK__ = '${fbWebhook}';\nwindow.__SUGGEST_EDIT_WEBHOOK__ = '${seWebhook}';\n`);
 
     // Search index — fallback: read files directly
     try {
