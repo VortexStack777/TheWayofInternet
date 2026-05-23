@@ -456,7 +456,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function openSettingsPanel() {
       if (tocRail) {
-        tocRail.style.display = '';
+        tocRail.classList.remove('toc-rail-hidden');
         tocRail.classList.add('settings-active');
       }
       applyLayoutPreferences();
@@ -475,13 +475,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (hasToc) {
         if (tocContentWrapper) tocContentWrapper.style.display = 'block';
         if (tocRail) {
-          tocRail.style.display = '';
+          tocRail.classList.remove('toc-rail-hidden');
           tocRail.classList.remove('settings-active');
         }
       } else {
         if (tocContentWrapper) tocContentWrapper.style.display = 'none';
         if (tocRail) {
-          tocRail.style.display = 'none';
+          tocRail.classList.add('toc-rail-hidden');
           tocRail.classList.remove('settings-active');
         }
       }
@@ -495,7 +495,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const wasOpen = ls('appearance-settings-open') === 'true';
     if (wasOpen) {
       if (tocRail) {
-        tocRail.style.display = '';
+        tocRail.classList.remove('toc-rail-hidden');
         tocRail.classList.add('settings-active');
       }
       applyLayoutPreferences();
@@ -888,27 +888,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     const mobileOpenSettings = document.getElementById('mobile-open-settings');
     const tocRail = document.getElementById('toc-rail');
     const settingsCloseBtn = document.getElementById('settings-close-btn');
-    const drawerSearchBtn = document.getElementById('drawer-search-btn');
-
     if (mobileTocBtn && tocRail) {
       mobileTocBtn.onclick = (e) => {
         e.stopPropagation();
-        var shown = tocRail.style.display !== 'none';
-        if (shown) {
-          tocRail.classList.remove('settings-active');
-          tocRail.classList.remove('settings-open');
-          tocRail.style.display = 'none';
-          mobileTocBtn.setAttribute('aria-label', 'Show Table of Contents');
-        } else {
+        const hidden = tocRail.classList.contains('toc-rail-hidden');
+        tocRail.style.overflowY = 'hidden';
+        if (hidden) {
+          tocRail.classList.remove('toc-rail-hidden');
           tocRail.classList.add('settings-active');
           tocRail.classList.remove('settings-open');
-          tocRail.style.display = '';
           mobileTocBtn.setAttribute('aria-label', 'Hide Table of Contents');
           var tocContent = document.getElementById('toc-content-wrapper');
           var settingsContent = document.getElementById('settings-content-wrapper');
           if (tocContent) tocContent.style.display = 'block';
           if (settingsContent) settingsContent.style.display = 'none';
+        } else {
+          tocRail.classList.remove('settings-active');
+          tocRail.classList.remove('settings-open');
+          tocRail.classList.add('toc-rail-hidden');
+          mobileTocBtn.setAttribute('aria-label', 'Show Table of Contents');
         }
+        setTimeout(function() {
+          tocRail.style.overflowY = '';
+        }, 350);
       };
     }
 
@@ -957,24 +959,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (originalSettingsClose) {
           originalSettingsClose(e);
         }
-      };
-    }
-
-    if (drawerSearchBtn) {
-      drawerSearchBtn.onclick = (e) => {
-        e.stopPropagation();
-        // Close left drawer first
-        const drawer = document.getElementById('drawer');
-        const scrim = document.getElementById('scrim');
-        const menuToggle = document.getElementById('menu-toggle');
-        if (drawer) drawer.classList.remove('open');
-        if (scrim) scrim.classList.remove('open');
-        if (menuToggle) {
-          menuToggle.setAttribute('aria-label', 'Open navigation menu');
-          menuToggle.setAttribute('aria-expanded', 'false');
-          menuToggle.title = 'Open navigation menu';
-        }
-        openSearch();
       };
     }
   }

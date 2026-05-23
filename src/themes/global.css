@@ -507,7 +507,7 @@ html.is-changing .transition-fade {
 }
 
 .pane .scroll-wrapper { padding-block: var(--catalog-spacing-xl); }
-.scroll-wrapper { overflow-y: auto; max-height: 100%; border-radius: inherit; box-sizing: border-box; }
+.scroll-wrapper { overflow-y: auto; max-height: 100%; border-radius: inherit; box-sizing: border-box; scrollbar-gutter: stable; }
 
 .content {
   box-sizing: border-box;
@@ -527,6 +527,7 @@ html.is-changing .transition-fade {
   top: var(--catalog-active-top-app-bar-height);
   height: calc(100dvh - var(--catalog-active-top-app-bar-height));
   overflow-y: auto;
+  overflow-x: hidden;
   box-sizing: border-box;
 }
 
@@ -757,10 +758,12 @@ html.is-changing .transition-fade {
 
 .toc-content-wrapper {
   padding-inline: 16px;
+  transition: opacity 0.3s cubic-bezier(0.2, 0, 0, 1), visibility 0.3s;
 }
 
 .settings-content-wrapper {
   padding-inline: 16px;
+  transition: opacity 0.3s cubic-bezier(0.2, 0, 0, 1), visibility 0.3s;
 }
 
 .toc-title {
@@ -1317,6 +1320,19 @@ h4:focus-within .anchor-link {
 /* Widescreen Desktop Inline settings expand transition */
 .toc-rail.settings-active {
   width: var(--catalog-toc-width) !important;
+}
+
+.toc-rail-hidden {
+  width: 0 !important;
+  overflow: hidden !important;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.toc-rail-hidden .toc-content-wrapper,
+.toc-rail-hidden .settings-content-wrapper {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .font-chip {
