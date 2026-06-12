@@ -96,7 +96,7 @@ strong { -webkit-font-smoothing: antialiased; }
 
 body {
   margin: 0;
-  font-family: var(--site-font-family, var(--md-ref-typeface-plain));
+  font-family: var(--site-font-family, var(--md-ref-typeface-mono)), "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", sans-serif;
   font-size: calc(var(--catalog-body-l-font-size) * var(--site-font-scale, 1));
   background-color: var(--md-sys-color-surface-container);
   color: var(--md-sys-color-on-surface);
