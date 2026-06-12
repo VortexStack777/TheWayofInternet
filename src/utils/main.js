@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   };
 
   // Initial Boot-time Typography application (prevents reload visual flash!)
-  const savedFont = ls('site-font-family') || 'system';
+  const savedFont = ls('site-font-family') || 'montserrat';
   const savedScale = parseFloat(ls('site-font-scale')) || 100;
   document.documentElement.style.setProperty('--site-font-family', fontsMap[savedFont] || fontsMap.system);
   document.documentElement.style.setProperty('--site-font-scale', savedScale / 100);

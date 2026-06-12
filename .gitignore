@@ -3,3 +3,4 @@ dist/
 .env
 graphify-out/
 References/
+.aider*
