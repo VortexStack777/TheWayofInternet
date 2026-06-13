@@ -1,4 +1,4 @@
-﻿---
+---
 title: Miscellaneous
 subtitle: Uncategorized useful tools, archives, and web utilities
 icon: category

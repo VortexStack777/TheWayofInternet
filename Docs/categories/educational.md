@@ -1,4 +1,4 @@
-﻿---
+---
 title: Educational
 subtitle: Online learning portals, textbooks, and documentation indexes
 icon: school

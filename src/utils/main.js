@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (legendTrigger) {
     legendTrigger.addEventListener('click', () => {
       const expanded = legendTrigger.getAttribute('aria-expanded') === 'true';
-      legendTrigger.setAttribute('aria-expanded', !expanded);
+      legendTrigger.setAttribute('aria-expanded', expanded ? 'false' : 'true');
     });
   }
 
@@ -102,21 +102,40 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
+    // Use the content scroll wrapper as root so rootMargin percentages are
+    // relative to the scrollable container height, not the viewport.
+    // The old '-88%' rootMargin collapsed to a NEGATIVE detection zone on
+    // screens shorter than ~570px, breaking TOC highlighting on all phones.
+    const scrollRoot = document.querySelector('.pane .scroll-wrapper');
+
     const observer = new IntersectionObserver((entries) => {
       const intersecting = entries.filter(e => e.isIntersecting);
       if (intersecting.length > 0) {
-        // If multiple headings are intersecting our threshold zone, 
-        // the one furthest down the page is the "current" one.
-        const target = intersecting.reduce((prev, curr) => 
+        const target = intersecting.reduce((prev, curr) =>
           curr.boundingClientRect.top > prev.boundingClientRect.top ? curr : prev
         );
-        
+
         tocLinks.forEach(l => l.classList.remove('active'));
         const id = target.target.id;
         const activeLink = document.querySelector(`.toc a[href="#${id}"]`);
-        if (activeLink) activeLink.classList.add('active');
+        if (activeLink) {
+          activeLink.classList.add('active');
+          // On mobile, keep the newly active link visible in the open TOC panel
+          const tocRail = document.getElementById('toc-rail');
+          if (window.matchMedia('(max-width: 1024px)').matches &&
+              tocRail && !tocRail.classList.contains('toc-rail-hidden') &&
+              tocRail.style.display !== 'none') {
+            activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        }
       }
-    }, { rootMargin: '-70px 0px -88% 0px' });
+    }, {
+      root: scrollRoot || null,
+      // 30% detection zone from the top of the scroll container — consistent
+      // across all screen sizes. No top margin needed: scrollRoot already
+      // starts below the app bar.
+      rootMargin: scrollRoot ? '0px 0px -70% 0px' : '-70px 0px -70% 0px'
+    });
 
     headings.forEach(h => observer.observe(h.el));
   }
@@ -155,9 +174,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ===== THEME SYSTEM =====
-  // Wait for MCU module
-  const mcu = await mcuPromise;
-  const { argbFromHex, Hct, hexFromArgb, MaterialDynamicColors, SchemeContent } = mcu;
+  let mcu;
+  try {
+    mcu = await mcuPromise;
+  } catch (cdnError) {
+    console.error('[theme] Material Color Utilities CDN unavailable — theme customization disabled:', cdnError);
+  }
+  const argbFromHex = mcu?.argbFromHex ?? null;
+  const Hct = mcu?.Hct ?? null;
+  const hexFromArgb = mcu?.hexFromArgb ?? null;
+  const MaterialDynamicColors = mcu?.MaterialDynamicColors ?? null;
+  const SchemeContent = mcu?.SchemeContent ?? null;
 
   const colorMap = [
     'background', 'on-background', 'surface', 'surface-dim', 'surface-bright',
@@ -284,8 +311,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Body event listeners
-  document.body.addEventListener('change-color', (e) => { changeColor(e.color); });
-  document.body.addEventListener('change-mode', (e) => { changeMode(e.mode); });
+  document.body.addEventListener('change-color', (e) => { changeColor(e.detail?.color ?? e.color); });
+  document.body.addEventListener('change-mode', (e) => { changeMode(e.detail?.mode ?? e.mode); });
 
   // System color scheme changes
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
@@ -293,25 +320,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     changeColor(ls('seed-color') || '#ECAA2E');
   });
 
-  // Initialize theme
-  if (!ls('material-theme')) {
-    changeBoth('#ECAA2E', 'auto');
-  } else {
-    apply(ls('seed-color') || '#ECAA2E', isDark(ls('color-mode') || 'auto'), ls('custom-bg'), ls('custom-surface'));
-  }
-  // Auto mode page-nav edge case
-  if (ls('color-mode') === 'auto') {
-    const actual = isDark('auto', false) ? 'dark' : 'light';
-    if (actual !== ls('last-auto-color-mode')) changeMode('auto');
+  // Initialize theme (only when MCU is available)
+  if (argbFromHex) {
+    if (!ls('material-theme')) {
+      changeBoth('#ECAA2E', 'auto');
+    } else {
+      apply(ls('seed-color') || '#ECAA2E', isDark(ls('color-mode') || 'auto'), ls('custom-bg'), ls('custom-surface'));
+    }
+    // Auto mode page-nav edge case
+    if (ls('color-mode') === 'auto') {
+      const actual = isDark('auto', false) ? 'dark' : 'light';
+      if (actual !== ls('last-auto-color-mode')) changeMode('auto');
+    }
   }
 
   // ===== THEME PICKER STATE VARIABLES =====
   const savedHex = ls('seed-color') || '#ECAA2E';
-  const hct = Hct.fromInt(argbFromHex(savedHex));
-  let hue = Math.round(hct.hue);
-  let chroma = Math.round(hct.chroma);
-  let tone = Math.round(hct.tone);
+  let hue = 0, chroma = 0, tone = 50;
   let currentHex = savedHex;
+  if (argbFromHex && Hct) {
+    const hct = Hct.fromInt(argbFromHex(savedHex));
+    hue = Math.round(hct.hue);
+    chroma = Math.round(hct.chroma);
+    tone = Math.round(hct.tone);
+  }
   let customBg = ls('custom-bg') || '';
   let customSurface = ls('custom-surface') || '';
 
@@ -333,6 +365,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let loadedPresetsData = null; // Persisted loaded preset data so we fetch only once!
 
   function initAppearancePanel() {
+    if (!argbFromHex) return; // MCU not available — skip theme panel
     const themeButton = document.getElementById('theme-button');
     const tocRail = document.getElementById('toc-rail');
     const tocContentWrapper = document.getElementById('toc-content-wrapper');
@@ -407,13 +440,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       menuItemTypography.onclick = (e) => {
         e.stopPropagation();
         showSettingsPage('typography');
-      };
-    }
-
-    if (menuItemSite) {
-      menuItemSite.onclick = (e) => {
-        e.stopPropagation();
-        showSettingsPage('site');
       };
     }
 
@@ -910,6 +936,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         setTimeout(function() {
           tocRail.style.overflowY = '';
+          // After the slide-in animation completes, center the currently
+          // active TOC link so the user immediately sees where they are.
+          if (!tocRail.classList.contains('toc-rail-hidden')) {
+            const activeLink = document.querySelector('.toc a.active');
+            if (activeLink) activeLink.scrollIntoView({ block: 'center', behavior: 'instant' });
+          }
         }, 350);
       };
     }
@@ -1022,8 +1054,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       searchDocs = data.docs || [];
 
       miniSearch = new MiniSearch({
-        fields: ['title', 'excerpt'], // fields to index for searching
-        storeFields: ['title', 'url', 'excerpt'], // fields to return with search results
+        fields: ['title', 'content'], // fields to index for searching
+        storeFields: ['title', 'url', 'content'], // fields to return with search results
         searchOptions: {
           fuzzy: 0.2,
           prefix: true
@@ -1032,6 +1064,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       miniSearch.addAll(searchDocs);
       isSearchInitialized = true;
+
+      // If the user typed while the index was still loading, run their query now
+      if (searchInput && searchInput.value.trim()) handleSearchInput();
     } catch (e) {
       console.error('Search initialization failed:', e);
     }
@@ -1079,7 +1114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       li.innerHTML = `
         <a href="${item.url}" class="search-result-link">
           <div class="search-result-title">${highlightText(item.title, query)}</div>
-          <div class="search-result-excerpt">${highlightText(item.excerpt || '', query)}</div>
+          <div class="search-result-excerpt">${highlightText(item.content || '', query)}</div>
         </a>
       `;
       // Close modal on link click (handled by swup page change or direct click)

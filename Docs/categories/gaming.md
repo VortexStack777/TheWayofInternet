@@ -1,4 +1,4 @@
-﻿---
+---
 title: Gaming
 subtitle: Game ROMs, emulators, mods, and open-source game engines
 icon: sports_esports

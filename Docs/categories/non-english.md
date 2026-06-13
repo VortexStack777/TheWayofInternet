@@ -1,4 +1,4 @@
-﻿---
+---
 title: Non-English
 subtitle: Translators, multilingual archives, and foreign media hubs
 icon: translate

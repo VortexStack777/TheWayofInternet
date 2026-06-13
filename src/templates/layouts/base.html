@@ -20,7 +20,7 @@
   <script type="module" src="https://esm.sh/@material/web@2.4.1/all.js"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Material+Symbols+Outlined&display=swap">
   {% if hasToc is not defined %}
-    {% if pageLayout != "home" and "/posts/" not in page.filePathStem %}
+    {% if pageLayout != "home" and "/posts/" not in page.filePathStem and page.filePathStem != "/posts" %}
       {% set hasToc = true %}
     {% else %}
       {% set hasToc = false %}
@@ -460,6 +460,108 @@
       </footer>
     </div>
   </div>
+
+  {# ===== FAB GROUP ===== #}
+  <div class="fab-group" id="fab-group" style="display:none">
+    <button id="suggest-edit-btn" title="Suggest an edit" aria-label="Suggest an edit">
+      <md-icon>edit</md-icon>
+    </button>
+    <button id="feedback-btn" title="Send feedback" aria-label="Send feedback">
+      <md-icon>chat_bubble</md-icon>
+    </button>
+  </div>
+
+  {# ===== FEEDBACK MODAL ===== #}
+  <div class="feedback-modal" id="feedback-modal" role="dialog" aria-modal="true" aria-label="Send feedback">
+    <div class="feedback-backdrop" id="feedback-backdrop"></div>
+    <div class="feedback-box">
+      <div class="feedback-header">
+        <md-icon class="feedback-header-icon">chat_bubble</md-icon>
+        <h2 class="feedback-title">Send Feedback</h2>
+        <button class="feedback-close" id="feedback-close" type="button" aria-label="Close feedback dialog">
+          <md-icon>close</md-icon>
+        </button>
+      </div>
+      <div class="feedback-body">
+        <select class="feedback-select" id="feedback-category" aria-label="Feedback type">
+          <option value="">Select feedback type...</option>
+          <option value="thanks">Say Thanks</option>
+          <option value="suggestion">Wiki Improvement Suggestion</option>
+          <option value="link-request">Add Link Request</option>
+          <option value="rating">Star/Unstar/Remove Suggestion</option>
+        </select>
+
+        <div id="fb-section-simple">
+          <textarea class="fb-textarea" id="fb-text" placeholder="Your message..." maxlength="1000" rows="4"></textarea>
+        </div>
+
+        <div id="fb-section-link-request" style="display:none">
+          <input class="fb-input" id="flink-url" type="url" placeholder="Link URL (https://...)" />
+          <input class="fb-input" id="flink-brief" type="text" placeholder="Brief description (max 500 chars)" maxlength="500" style="margin-top:8px" />
+          <textarea class="fb-textarea fb-textarea-sm" id="flink-detail" placeholder="Additional details (optional)..." maxlength="1000" rows="3" style="margin-top:8px"></textarea>
+        </div>
+
+        <div id="fb-section-rating" style="display:none">
+          <div class="fb-rating-row">
+            <select class="fb-select-sm" id="frating-action" aria-label="Rating action">
+              <option value="star">⭐ Star</option>
+              <option value="unstar">☆ Unstar</option>
+              <option value="remove">🗑 Remove</option>
+            </select>
+            <input class="fb-input" id="frating-url" type="url" placeholder="Resource URL (https://...)" />
+          </div>
+          <textarea class="fb-textarea" id="frating-reason" placeholder="Reason... (max 1000 chars)" maxlength="1000" rows="3" style="margin-top:8px"></textarea>
+        </div>
+
+        <div class="fb-contact">
+          <div class="fb-contact-row">
+            <input class="fb-input" id="fb-email" type="email" placeholder="Email" />
+            <span class="fb-contact-or">or</span>
+            <input class="fb-input" id="fb-discord" type="text" placeholder="Discord handle" />
+          </div>
+          <p class="fb-contact-hint">At least one contact method is required.</p>
+        </div>
+
+        <div class="fb-msg fb-success" id="fb-success">Feedback sent successfully!</div>
+        <div class="fb-msg fb-error" id="fb-error">Failed to send feedback. Please try again.</div>
+
+        <div class="fb-footer">
+          <span class="fb-charcount" id="fb-charcount">0 / 1000</span>
+          <button class="fb-submit" id="fb-submit" type="button" disabled>Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {# ===== SUGGEST EDIT MODAL ===== #}
+  <div class="feedback-modal" id="se-modal" role="dialog" aria-modal="true" aria-label="Suggest an edit">
+    <div class="feedback-backdrop" id="se-backdrop"></div>
+    <div class="feedback-box">
+      <div class="feedback-header">
+        <md-icon class="feedback-header-icon">edit</md-icon>
+        <h2 class="feedback-title">Suggest an Edit</h2>
+        <button class="feedback-close" id="se-close" type="button" aria-label="Close suggest edit dialog">
+          <md-icon>close</md-icon>
+        </button>
+      </div>
+      <div class="feedback-body">
+        <input class="fb-input" id="se-page" type="text" placeholder="Page URL or title (required)" />
+        <input class="fb-input" id="se-section" type="text" placeholder="Section (optional)" style="margin-top:8px" />
+        <textarea class="fb-textarea" id="se-msg" placeholder="Describe your suggested edit... (max 2000 chars)" maxlength="2000" rows="5" style="margin-top:8px"></textarea>
+
+        <div class="fb-msg fb-success" id="se-success">Suggestion sent successfully!</div>
+        <div class="fb-msg fb-error" id="se-error">Failed to send suggestion. Please try again.</div>
+
+        <div class="fb-footer">
+          <span class="fb-charcount" id="se-charcount">0 / 2000</span>
+          <button class="fb-submit" id="se-submit" type="button" disabled>Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/feedback-config.js"></script>
+  <script src="/js/feedback.js"></script>
 
 </body>
 </html>

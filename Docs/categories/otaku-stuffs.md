@@ -1,4 +1,4 @@
-﻿---
+---
 title: Otaku Stuffs
 subtitle: Anime indexes, manga reader directories, and fan translations
 icon: animation

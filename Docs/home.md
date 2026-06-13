@@ -24,4 +24,4 @@ The Way of Internet is your curated gateway to the best tools, resources, and pl
 
 ## About
 
-This is a community-driven, open-source project. Every link is verified individually and updated continuously. If you find something broken or want to contribute, join our [Discord](https://discord.gg/) or visit the [Contributors](/Contributors/) page.
+This is a community-driven, open-source project. Every link is verified individually and updated continuously. If you find something broken or want to contribute, join our [Discord](https://discord.gg/INVITE_CODE_HERE) or visit the [Contributors](/contributors/) page.
