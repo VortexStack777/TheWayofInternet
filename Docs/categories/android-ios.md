@@ -1,4 +1,4 @@
-﻿---
+---
 title: Android/iOS
 subtitle: Mobile apps, custom ROMs, jailbreaks, and app stores
 icon: smartphone

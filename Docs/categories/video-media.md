@@ -1,4 +1,4 @@
-﻿---
+---
 title: Video Media
 subtitle: Streaming indexes, movie databases, and player utilities
 icon: movie

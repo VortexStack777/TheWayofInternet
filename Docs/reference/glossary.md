@@ -116,22 +116,22 @@ title: Glossary
 
 - ⭐ [Houdoku](https://houdoku.netlify.app) | Manga |
 
-- ⭐ [Anymex](https://anymex.vercel.app) | Anime + Manga | [Extention Guide]()
+- ⭐ [Anymex](https://anymex.vercel.app) | Anime + Manga | Extension Guide
 
-- [Mangayomi](https://github.com/kodjodevf/mangayomi) | Anime + Manga | [Extention Guide]()
+- [Mangayomi](https://github.com/kodjodevf/mangayomi) | Anime + Manga | Extension Guide
 
 - [Unyo](https://github.com/K3vinb5/Unyo)
 
 ### Android
-- 🌟 [Aniyomi](https://aniyomi.org/) | Anime + Manga | [Extention Guide]()
+- 🌟 [Aniyomi](https://aniyomi.org/) | Anime + Manga | Extension Guide
 
 - 🌟 [Hayase](https://hayase.watch) | Torrent Streamer
 
-- 🌟 [Mihon](ttps://mihon.app/) | Manga | Previous name Tachiyomi | [forks](https://mihon.app/forks/) | [Extention Guide]()
+- 🌟 [Mihon](https://mihon.app/) | Manga | Previous name Tachiyomi | [forks](https://mihon.app/forks/) | Extension Guide
 
-- ⭐ [AnymeX](https://anymex.vercel.app) | Anime + Manga | [Extention Guide]()
+- ⭐ [AnymeX](https://anymex.vercel.app) | Anime + Manga | Extension Guide
 
-- ⭐ [Mangayomi](https://github.com/kodjodevf/mangayomi) | Anime + Manga | [Extention Guide]()
+- ⭐ [Mangayomi](https://github.com/kodjodevf/mangayomi) | Anime + Manga | Extension Guide
 
 - [Animiru](https://github.com/quickdesh/Animiru) | Aniyomi Fork | Anime + Manga
 
@@ -139,9 +139,9 @@ title: Glossary
 
 - [Animetail](https://github.com/Animetailapp/Animetail) | Aniyomi Fork | Anime + Manga
 
-- [Komikku](ttps://komikku-app.github.io) | Manga | Mihon Fork 
+- [Komikku](https://komikku-app.github.io) | Manga | Mihon Fork 
 
-- [Yokai](ttps://mihon.app/forks/Yokai/) | Manga | Mihon Fork 
+- [Yokai](https://mihon.app/forks/Yokai/) | Manga | Mihon Fork 
 
 ### Extentions
 
@@ -227,7 +227,7 @@ title: Glossary
 
 - [ToonsHub](https://discord.gg/cTRhnt7N8B)
 
-#### Anilist | MAL Tools
+#### Anilist MAL Tools
 SOON!!
 
 #### Anime Filler Guide

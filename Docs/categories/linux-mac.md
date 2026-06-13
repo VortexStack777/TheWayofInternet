@@ -1,4 +1,4 @@
-﻿---
+---
 title: Linux/Mac
 subtitle: Unix resources, package managers, and customization tools
 icon: terminal

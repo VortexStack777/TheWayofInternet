@@ -1,4 +1,4 @@
-﻿---
+---
 title: Privacy
 subtitle: Encrypted messaging, privacy-focused search, and VPN resources
 icon: security

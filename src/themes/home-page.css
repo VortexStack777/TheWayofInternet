@@ -154,14 +154,22 @@ body.is-home .vp-hero {
   justify-content: center;
   width: 48px;
   height: 48px;
+  flex-shrink: 0;
   border-radius: 50%;
+  overflow: hidden;
   background-color: var(--md-sys-color-surface-container-high);
   border: 1px solid var(--md-sys-color-outline-variant);
   color: var(--md-sys-color-primary);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+  transition: background-color 0.25s cubic-bezier(0.2, 0, 0, 1),
+              color 0.25s cubic-bezier(0.2, 0, 0, 1),
+              border-color 0.25s cubic-bezier(0.2, 0, 0, 1),
+              box-shadow 0.25s cubic-bezier(0.2, 0, 0, 1);
   animation: bounce-scroll 2s infinite;
   z-index: 10;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
 }
 .vp-scroll-down:hover {
   background-color: var(--md-sys-color-primary-container);
@@ -169,10 +177,23 @@ body.is-home .vp-hero {
   border-color: var(--md-sys-color-primary);
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.12);
 }
+.vp-scroll-down:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 3px;
+}
 .vp-scroll-down md-icon {
   font-size: 28px;
-  width: 28px;
-  height: 28px;
+  pointer-events: none;
+}
+
+@media (max-width: 480px) {
+  .vp-scroll-down {
+    width: 40px;
+    height: 40px;
+  }
+  .vp-scroll-down md-icon {
+    font-size: 24px;
+  }
 }
 
 @keyframes bounce-scroll {
@@ -283,9 +304,15 @@ body.is-home .vp-hero {
   .vp-title {
     font-size: 40px;
   }
-  
+
   .vp-tagline {
     font-size: 20px;
+  }
+
+  .vp-hero-icon-container,
+  .vp-hero-img {
+    width: min(280px, 80vw);
+    height: min(280px, 80vw);
   }
 }
 

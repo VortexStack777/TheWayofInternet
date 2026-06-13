@@ -10,10 +10,10 @@ hero:
       link: guide/getting-started/
     - theme: secondary
       text: Contributors
-      link: /Contributors/
+      link: /contributors/
     - theme: secondary
       text: Discord
-      link: https://discord.gg/
+      link: https://discord.gg/INVITE_CODE_HERE
 ---
 
 {% includeMarkdown "Docs/home.md" %}

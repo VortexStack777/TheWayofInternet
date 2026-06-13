@@ -1,4 +1,4 @@
-﻿---
+---
 title: Books
 subtitle: E-book directories, digital libraries, and reading applications
 icon: book

@@ -139,6 +139,11 @@
       errorEl.style.display = 'block';
       return;
     }
+    try { new URL(webhookUrl); } catch {
+      errorEl.textContent = 'Webhook URL is invalid. Please contact the site admin.';
+      errorEl.style.display = 'block';
+      return;
+    }
 
     var cat = category.value;
     var email = fbEmail.value.trim();
@@ -288,7 +293,12 @@
 
   submitBtn.addEventListener('click', async function () {
     if (!webhookUrl) {
-      errorEl.textContent = 'Webhook not configured. Ask the site admin to set up DISCORD_FEEDBACK_WEBHOOK.';
+      errorEl.textContent = 'Webhook not configured. Ask the site admin to set up DISCORD_SUGGEST_EDIT_WEBHOOK.';
+      errorEl.style.display = 'block';
+      return;
+    }
+    try { new URL(webhookUrl); } catch {
+      errorEl.textContent = 'Webhook URL is invalid. Please contact the site admin.';
       errorEl.style.display = 'block';
       return;
     }

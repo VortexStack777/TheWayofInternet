@@ -29,9 +29,9 @@ layout: layouts/base.html
       {% endfor %}
     </div>
     {% endif %}
-    <div class="vp-scroll-down" onclick="document.querySelector('.scroll-wrapper').scrollTo({top: window.innerHeight, behavior: 'smooth'})" title="Scroll down">
+    <button type="button" class="vp-scroll-down" onclick="document.querySelector('.scroll-wrapper').scrollTo({top: window.innerHeight, behavior: 'smooth'})" title="Scroll down" aria-label="Scroll down to content">
       <md-icon>keyboard_arrow_down</md-icon>
-    </div>
+    </button>
   </div>
 </div>
 <div class="vp-markdown-content">

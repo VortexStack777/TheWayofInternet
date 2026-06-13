@@ -1,4 +1,4 @@
-﻿---
+---
 title: Artificial Intelligence
 subtitle: AI search assistants, code generators, and media tools
 icon: psychology
